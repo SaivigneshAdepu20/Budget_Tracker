@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
-class ChartBat extends StatelessWidget {
+class ChartBar extends StatelessWidget {
   final String label;
   final double spendingAmount;
   final double spendingPctOfTotal;
-  const ChartBat(
+  const ChartBar(
       {Key? key,
       required this.label,
       required this.spendingAmount,
@@ -15,7 +15,10 @@ class ChartBat extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Text('rs ${spendingAmount.toStringAsFixed(0)}'),
+        Container(
+            height: 20,
+            child: FittedBox(
+                child: Text('rs ${spendingAmount.toStringAsFixed(0)}'))),
         const SizedBox(
           height: 4,
         ),
@@ -30,7 +33,7 @@ class ChartBat extends StatelessWidget {
                     color: Colors.grey,
                     width: 1.0,
                   ),
-                  color:const Color.fromRGBO(220, 220, 220, 1),
+                  color: const Color.fromRGBO(220, 220, 220, 1),
                   borderRadius: BorderRadius.circular(10),
                 ),
               ),

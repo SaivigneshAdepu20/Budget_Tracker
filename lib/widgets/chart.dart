@@ -1,4 +1,5 @@
 import 'package:budget_tracker/models/transaction.dart';
+import 'package:budget_tracker/widgets/chart_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -23,6 +24,12 @@ class Chart extends StatelessWidget {
         'day': DateFormat.E().format(weekDay).substring(0, 1),
         'amount': totalSum
       };
+    }).reversed.toList();
+  }
+
+  double get totalSpending {
+    return groupedTransactionValues.fold(0.0, (sum, item) {
+      return sum + (item['amount'] as double);
     });
   }
 
@@ -30,11 +37,26 @@ class Chart extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       elevation: 6,
-      margin: EdgeInsets.all(20),
-      child: Row(
-        children: groupedTransactionValues.map((data) {
-          return Text('${data['day']}:${data['amount']}');
-        }).toList(),
+      margin: const EdgeInsets.all(20),
+      child: Padding(
+        padding: const EdgeInsets.all(10),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: groupedTransactionValues.map((data) {
+            return Flexible(
+              // flex:1,
+              fit: FlexFit.tight,
+              child: ChartBar(
+                label: data['day'].toString(),
+                spendingAmount: (data['amount'] as double),
+                spendingPctOfTotal: totalSpending == 0.0
+                    ? 0.0
+                    : (data['amount'] as double) / totalSpending,
+              ),
+            );
+            // Text('${data['day']}:${data['amount']}');
+          }).toList(),
+        ),
       ),
     );
   }
